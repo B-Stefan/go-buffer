@@ -41,6 +41,6 @@ See [example_cli.go](./examole_cli.go)
 
 ## Todos 
 
-* [#2 Enhance parsing of options (see @Todo)](#2)
-* [#1 - Add POST routes for updates](#1)
+* [#2 Enhance parsing of options (see @Todo)](https://github.com/B-Stefan/go-buffer/issues/2)
+* [#1 - Add POST routes for updates](https://github.com/B-Stefan/go-buffer/issues/1)
 * Enhance error handling 
