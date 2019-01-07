@@ -23,17 +23,17 @@ type CountUpdateResponse struct {
 	Updates []Update `json:"updates"`
 }
 type PendingUpdateOptions struct {
-	Page  int   `form:"page",json:"page"`
-	Count int   `form:"count",json:"count"`
-	Since int   `form:"since",json:"since"`
-	Utc   int64 `form:"utc",json:"utc"`
+	Page  int   `form:"page" json:"page"`
+	Count int   `form:"count" json:"count"`
+	Since int   `form:"since" json:"since"`
+	Utc   int64 `form:"utc" json:"utc"`
 }
 type SendUpdateOptions struct {
-	Page   int    `form:"page",json:"page"`
-	Count  int    `form:"count",json:"count"`
-	Since  int    `form:"since",json:"since"`
-	Utc    int64  `form:"utc",json:"utc"`
-	Filter string `form:"filter",json:"filter"`
+	Page   int    `form:"page" json:"page"`
+	Count  int    `form:"count" json:"count"`
+	Since  int    `form:"since" json:"since"`
+	Utc    int64  `form:"utc" json:"utc"`
+	Filter string `form:"filter" json:"filter"`
 }
 type UpdateService struct {
 	client Client
