@@ -3,9 +3,11 @@ package api
 import (
 	"encoding/json"
 	"github.com/go-playground/form"
+	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -70,6 +72,10 @@ func (c *apiClientV1) do(req *http.Request, v interface{}) (*http.Response, erro
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		return nil, errors.New("Invalid request. Status code was " + strconv.Itoa(resp.StatusCode))
 	}
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(v)
