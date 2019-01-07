@@ -24,7 +24,7 @@ func tryJsonEncoding(jsonStr string, model interface{}) error {
 		return err
 	}
 
-	eq, err := JSONBytesEqual(byteOut, []byte(jsonStr))
+	eq, err := isJSONEqual(byteOut, []byte(jsonStr))
 
 	fmt.Println("a=c\t", eq, "with error", err)
 
@@ -41,8 +41,8 @@ func tryJsonEncoding(jsonStr string, model interface{}) error {
 	return nil
 }
 
-// JSONBytesEqual compares the JSON in two byte slices.
-func JSONBytesEqual(a, b []byte) (bool, error) {
+// isJSONEqual compares the JSON in two byte slices.
+func isJSONEqual(a, b []byte) (bool, error) {
 	var j, j2 interface{}
 	if err := json.Unmarshal(a, &j); err != nil {
 		return false, err

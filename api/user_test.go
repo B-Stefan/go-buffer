@@ -22,7 +22,7 @@ func TestDecodeUser(t *testing.T) {
 	err := json.Unmarshal([]byte(jsonStr), &user)
 	byteOut, err := json.Marshal(&user)
 
-	eq, err := JSONBytesEqual(byteOut, []byte(jsonStr))
+	eq, err := isJSONEqual(byteOut, []byte(jsonStr))
 
 	fmt.Println("a=c\t", eq, "with error", err)
 
