@@ -41,6 +41,6 @@ See [example_cli.go](./examole_cli.go)
 
 ## Todos 
 
-* #2 - Enhance parsing of options (see @Todo)
-* #1 - Add POST routes for updates
+* [#2 Enhance parsing of options (see @Todo)](#2)
+* [#1 - Add POST routes for updates](#1)
 * Enhance error handling 
