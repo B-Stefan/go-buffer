@@ -1,10 +1,5 @@
 package api
 
-import (
-	"net/url"
-	"strconv"
-)
-
 type Update struct {
 	Id              string           `json:"id"`
 	CreatedAt       int64            `json:"created_at"`
@@ -28,14 +23,17 @@ type CountUpdateResponse struct {
 	Updates []Update `json:"updates"`
 }
 type PendingUpdateOptions struct {
-	Page  int   `json:"page"`
-	Count int   `json:"count"`
-	Since int   `json:"since"`
-	Utc   int64 `json:"utc"`
+	Page  int   `form:"page",json:"page"`
+	Count int   `form:"count",json:"count"`
+	Since int   `form:"since",json:"since"`
+	Utc   int64 `form:"utc",json:"utc"`
 }
 type SendUpdateOptions struct {
-	PendingUpdateOptions
-	Filter string `json:"filter"`
+	Page   int    `form:"page",json:"page"`
+	Count  int    `form:"count",json:"count"`
+	Since  int    `form:"since",json:"since"`
+	Utc    int64  `form:"utc",json:"utc"`
+	Filter string `form:"filter",json:"filter"`
 }
 type UpdateService struct {
 	client Client
@@ -54,7 +52,11 @@ func (s *UpdateService) GetUpdate(id string) (Update, error) {
 
 func (s *UpdateService) GetPendingUpdates(profileId string, options PendingUpdateOptions) (CountUpdateResponse, error) {
 
-	parameters := s.getValues(options)
+	parameters, err := getValuesWithoutEmpty(options)
+
+	if err != nil {
+		return CountUpdateResponse{}, err
+	}
 
 	req, err := s.client.newRequest("GET", "/profiles/"+profileId+"/updates/pending.json?"+parameters.Encode(), nil)
 	if err != nil {
@@ -67,25 +69,10 @@ func (s *UpdateService) GetPendingUpdates(profileId string, options PendingUpdat
 
 func (s *UpdateService) GetSendUpdates(profileId string, options SendUpdateOptions) (CountUpdateResponse, error) {
 
-	parameters := url.Values{}
+	parameters, err := getValuesWithoutEmpty(options)
 
-	// @TODO: Improve solution by adding custom encoder for values.
-	// See: https://github.com/go-playground/form#registering-custom-types
-
-	if options.Count > 0 {
-		parameters.Add("count", strconv.Itoa(options.Count))
-	}
-	if options.Page > 0 {
-		parameters.Add("page", strconv.Itoa(options.Page))
-	}
-	if options.Utc > 0 {
-		parameters.Add("utc", strconv.FormatInt(options.Utc, 10))
-	}
-	if options.Since > 0 {
-		parameters.Add("since", strconv.Itoa(options.Since))
-	}
-	if options.Filter != "" {
-		parameters.Add("filter", options.Filter)
+	if err != nil {
+		return CountUpdateResponse{}, err
 	}
 
 	req, err := s.client.newRequest("GET", "/profiles/"+profileId+"/updates/send.json?"+parameters.Encode(), nil)
@@ -95,25 +82,4 @@ func (s *UpdateService) GetSendUpdates(profileId string, options SendUpdateOptio
 	var res CountUpdateResponse
 	_, err = s.client.do(req, &res)
 	return res, err
-}
-
-func (s *UpdateService) getValues(options PendingUpdateOptions) url.Values {
-	parameters := url.Values{}
-
-	// @TODO: Improve solution by adding custom encoder for values.
-	// See: https://github.com/go-playground/form#registering-custom-types
-
-	if options.Count > 0 {
-		parameters.Add("count", strconv.Itoa(options.Count))
-	}
-	if options.Page > 0 {
-		parameters.Add("page", strconv.Itoa(options.Page))
-	}
-	if options.Utc > 0 {
-		parameters.Add("utc", strconv.FormatInt(options.Utc, 10))
-	}
-	if options.Since > 0 {
-		parameters.Add("since", strconv.Itoa(options.Since))
-	}
-	return parameters
 }
