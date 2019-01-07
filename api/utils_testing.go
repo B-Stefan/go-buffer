@@ -13,7 +13,16 @@ import (
 func tryJsonEncoding(jsonStr string, model interface{}) error {
 
 	err := json.Unmarshal([]byte(jsonStr), &model)
+
+	if err != nil {
+		return err
+	}
+
 	byteOut, err := json.Marshal(&model)
+
+	if err != nil {
+		return err
+	}
 
 	eq, err := JSONBytesEqual(byteOut, []byte(jsonStr))
 
