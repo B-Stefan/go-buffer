@@ -38,20 +38,20 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	// The HTTP Client returned by conf.Client will refresh the token as necessary.
 	client := conf.Client(ctx, tok)
 
-	bufferClient := api.NewClient(client)
-
-	profiles, err := bufferClient.Profile.ListProfiles()
-
 	if err != nil {
 		log.Fatal(err)
 	} else {
 		log.Println(color.CyanString("Authentication successful"))
 	}
-	log.Print(profiles)
+
 	// show succes page
 	msg := "<p><strong>Success!</strong></p>"
 	msg = msg + "<p>You are authenticated and can now return to the CLI.</p>"
 	fmt.Fprintf(w, msg)
+
+	bufferClient := api.NewClient(client)
+	profiles, err := bufferClient.Profile.ListProfiles()
+	log.Print("Profiles:", profiles)
 }
 
 func main() {
