@@ -47,7 +47,7 @@ func TestDecodeProfile(t *testing.T) {
 	err := json.Unmarshal([]byte(profileJson), &profile)
 	byteOut, err := json.Marshal(&profile)
 
-	eq, err := JSONBytesEqual(byteOut, []byte(profileJson))
+	eq, err := isJSONEqual(byteOut, []byte(profileJson))
 
 	fmt.Println("a=c\t", eq, "with error", err)
 
