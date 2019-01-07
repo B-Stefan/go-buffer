@@ -32,15 +32,20 @@ func printProfiles(client *http.Client) {
 func main() {
 	ctx = context.Background()
 	var clientSecret string
+	var clientId string
 	flag.StringVar(&clientSecret, "clientSecret", "", "Your client secret")
+	flag.StringVar(&clientId, "clientId", "", "Your client id")
 	flag.Parse()
 
 	if clientSecret == "" {
 		log.Fatal(errors.New("Missing flag: clientSecret. Start this example with -clientSecret"))
 	}
+	if clientId == "" {
+		log.Fatal(errors.New("Missing flag: clientId. Start this example with -clientId"))
+	}
 
 	conf = &oauth2.Config{
-		ClientID:     "5c32a3174b1be71532161683", // Change to your client id: https://buffer.com/developers/apps/
+		ClientID:     clientId,
 		ClientSecret: clientSecret,
 		Scopes:       nil,
 		Endpoint: oauth2.Endpoint{
