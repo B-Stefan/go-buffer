@@ -1,8 +1,6 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
@@ -18,23 +16,10 @@ func TestDecodeUser(t *testing.T) {
   		"timezone":"Asia\/Tel_Aviv"
 	}`
 
-	var user User
-	err := json.Unmarshal([]byte(jsonStr), &user)
-	byteOut, err := json.Marshal(&user)
-
-	eq, err := isJSONEqual(byteOut, []byte(jsonStr))
-
-	fmt.Println("a=c\t", eq, "with error", err)
-
+	model := new(User)
+	err := tryJsonEncoding(jsonStr, model)
 	if err != nil {
-		fmt.Printf("%+v\n", user)
-		t.Fatal(err)
-	}
-
-	if !eq {
-		fmt.Printf("%+v\n", user)
-		fmt.Printf("%+v\n", byteOut)
-		t.Error("Json documents are not equal")
+		t.Error(err)
 	}
 }
 

@@ -1,8 +1,6 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
@@ -10,7 +8,7 @@ import (
 
 func TestDecodeProfile(t *testing.T) {
 
-	profileJson := `{
+	jsonStr := `{
 	"avatar" : "http://a3.twimg.com/profile_images/1405180232.png",
 		"created_at" :  1320703028,
 		"default" : true,
@@ -43,23 +41,10 @@ func TestDecodeProfile(t *testing.T) {
     "user_id" : "4eb854340acb04e870000010"
     }`
 
-	var profile Profile
-	err := json.Unmarshal([]byte(profileJson), &profile)
-	byteOut, err := json.Marshal(&profile)
-
-	eq, err := isJSONEqual(byteOut, []byte(profileJson))
-
-	fmt.Println("a=c\t", eq, "with error", err)
-
+	model := new(Profile)
+	err := tryJsonEncoding(jsonStr, model)
 	if err != nil {
-		fmt.Printf("%+v\n", profile)
-		t.Fatal(err)
-	}
-
-	if !eq {
-		fmt.Printf("%+v\n", profile)
-		fmt.Printf("%+v\n", byteOut)
-		t.Error("Json documents are not equal")
+		t.Error(err)
 	}
 }
 

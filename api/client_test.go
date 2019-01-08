@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"github.com/johnnadratowski/golang-neo4j-bolt-driver/log"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"testing"
