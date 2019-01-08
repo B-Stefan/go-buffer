@@ -69,7 +69,7 @@ type CreateUpdateOptions struct {
 	ScheduledAt bool          `form:"scheduled_at,omitempty" json:"scheduled_at,omitempty"`
 	Retweet     struct {
 		TweetId string `form:"tweet_id" json:"tweet_id"`
-		Comment string `form:"tweet_id,omitempty" json:"tweet_id,omitempty"`
+		Comment string `form:"comment,omitempty" json:"comment,omitempty"`
 	} `form:"retweet,omitempty" json:"retweet,omitempty"`
 }
 
