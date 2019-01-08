@@ -36,7 +36,7 @@ func main() {
 
 ### OAuth example 
 
-See [example.go](./examole.go)
+See [example.go](./example.go)
 
 
 ## Todos 
