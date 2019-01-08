@@ -41,7 +41,6 @@ func TestDoRequest(t *testing.T) {
 	apiClient := NewClient(client)
 	req, err := apiClient.newRequest("GET", "/myPath", nil)
 
-	println(req, err)
 	resBody := struct {
 		Status string `json:"status"`
 	}{}
@@ -51,7 +50,6 @@ func TestDoRequest(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	println(res, err)
 	assert.Equal(t, "ok", resBody.Status)
 	assert.Equal(t, 200, res.StatusCode)
 }
