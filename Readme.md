@@ -2,10 +2,10 @@
 [![Build Status](https://travis-ci.org/B-Stefan/go-buffer.svg?branch=master)](https://travis-ci.org/B-Stefan/go-buffer)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8391f026b21e3a252567/maintainability)](https://codeclimate.com/github/B-Stefan/go-buffer/maintainability)
 
-A simple wrapper to simplify and type the awsome [buffer rest api](https://buffer.com/developers/api)
+A simple wrapper to simplify and type the awesome [buffer rest api](https://buffer.com/developers/api)
 
 *You encountered a bug or want to improve this module? 
-Wow, great lets improve together! Im happy for every issue or merge request!*
+Wow, great let's improve together! I'm happy about every issue or merge request!*
 
 **Known issue with oAuth see [#4](https://github.com/B-Stefan/go-buffer/issues/4)**
 
