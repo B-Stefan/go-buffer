@@ -44,7 +44,7 @@ See [example.go](./example.go)
 
 ## Todos / Learnings
 
-* Fist go project - go is fun to lean! 👍
+* Fist go project - go is fun to learn! 👍
 * This this API with real return values. **Blocked by [#4](https://github.com/B-Stefan/go-buffer/issues/4)**
 * Enhance error handling according to docs 
 * Use composition for response / options types? (Learn how to use composition in go 😉)
