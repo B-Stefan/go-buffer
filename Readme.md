@@ -49,3 +49,4 @@ See [example.go](./example.go)
 * Enhance error handling according to docs 
 * Use composition for response / options types? (Learn how to use composition in go 😉)
 * Test more unmarshal / marshal or create a integration test with real api (favored)
+* Improve naming of methods - try to avoid `UpdateUpdate(options UpdateUpdateOptions)` signature (Breaking change with prev. version)
