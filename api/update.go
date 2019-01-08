@@ -40,7 +40,7 @@ type SuccessUpdateResponse struct {
 	Success bool     `json:"success"`
 	Updates []Update `json:"updates"`
 }
-type SuccessCreateUpdateResponse struct {
+type SuccessUpdateResponseWithCount struct {
 	Success          bool     `json:"success"`
 	BufferCount      int      `json:"buffer_count"`
 	BufferPercentage float32  `json:"buffer_percentage"`
@@ -71,6 +71,14 @@ type CreateUpdateOptions struct {
 		TweetId string `form:"tweet_id" json:"tweet_id"`
 		Comment string `form:"tweet_id,omitempty" json:"tweet_id,omitempty"`
 	} `form:"retweet,omitempty" json:"retweet,omitempty"`
+}
+
+type UpdateUpdateOptions struct {
+	Text        string        `form:"text" json:"text"`
+	Media       []interface{} `form:"media" json:"media"`
+	Now         bool          `form:"now" json:"now"`
+	Utc         bool          `form:"utc" json:"utc"`
+	ScheduledAt bool          `form:"scheduled_at" json:"scheduled_at"`
 }
 
 type UpdateService struct {
@@ -158,14 +166,26 @@ func (s *UpdateService) ShuffleUpdate(profileId string, options ShuffleUpdatesOp
 	return res, err
 }
 
-func (s *UpdateService) CreateUpdate(newUpdate CreateUpdateOptions) (SuccessCreateUpdateResponse, error) {
+func (s *UpdateService) CreateUpdate(newUpdate CreateUpdateOptions) (SuccessUpdateResponseWithCount, error) {
 
 	req, err := s.client.newRequest("POST", "/updates/create.json", newUpdate)
 
 	if err != nil {
-		return SuccessCreateUpdateResponse{}, err
+		return SuccessUpdateResponseWithCount{}, err
 	}
-	var res SuccessCreateUpdateResponse
+	var res SuccessUpdateResponseWithCount
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) UpdateUpdate(newUpdate UpdateUpdateOptions) (SuccessUpdateResponseWithCount, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/update.json", newUpdate)
+
+	if err != nil {
+		return SuccessUpdateResponseWithCount{}, err
+	}
+	var res SuccessUpdateResponseWithCount
 	_, err = s.client.do(req, &res)
 	return res, err
 }
