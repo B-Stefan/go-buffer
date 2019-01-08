@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/b-stefan/go-buffer/api"
+	"github.com/B-Stefan/go-buffer/api"
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/skratchdot/open-golang/open"
