@@ -27,7 +27,7 @@ func main() {
 	profiles, err := service.Profile.ListProfiles()
 
 	if err != nil{
-		fmt.Println("Got error... EOF means authentication failed")
+		fmt.Println("Got error...")
 		log.Fatal(err)
 	}
 	fmt.Println(profiles)
@@ -36,7 +36,7 @@ func main() {
 
 ### OAuth example 
 
-See [example_cli.go](./examole_cli.go)
+See [example.go](./examole.go)
 
 
 ## Todos 
