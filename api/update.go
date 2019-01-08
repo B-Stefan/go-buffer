@@ -40,6 +40,12 @@ type SuccessUpdateResponse struct {
 	Success bool     `json:"success"`
 	Updates []Update `json:"updates"`
 }
+type SuccessCreateUpdateResponse struct {
+	Success          bool     `json:"success"`
+	BufferCount      int      `json:"buffer_count"`
+	BufferPercentage float32  `json:"buffer_percentage"`
+	Updates          []Update `json:"updates"`
+}
 
 type ReorderUpdatesOptions struct {
 	Order  int  `form:"order" json:"order"`
@@ -51,6 +57,22 @@ type ShuffleUpdatesOptions struct {
 	Count int  `form:"count" json:"count"`
 	Utc   bool `form:"utc" json:"utc"`
 }
+
+type CreateUpdateOptions struct {
+	ProfileIds  []string      `form:"profile_ids" json:"profile_ids"`
+	Text        string        `form:"text,omitempty" json:"text,omitempty"`
+	Shorten     bool          `form:"shorten,omitempty" json:"shorten,omitempty"`
+	Now         bool          `form:"now,omitempty" json:"now,omitempty"`
+	Top         bool          `form:"top,omitempty" json:"top,omitempty"`
+	Media       []interface{} `form:"media,omitempty" json:"media,omitempty"`
+	Attachment  bool          `form:"attachment,omitempty" json:"attachment,omitempty"`
+	ScheduledAt bool          `form:"scheduled_at,omitempty" json:"scheduled_at,omitempty"`
+	Retweet     struct {
+		TweetId string `form:"tweet_id" json:"tweet_id"`
+		Comment string `form:"tweet_id,omitempty" json:"tweet_id,omitempty"`
+	} `form:"retweet,omitempty" json:"retweet,omitempty"`
+}
+
 type UpdateService struct {
 	client Client
 }
@@ -132,6 +154,18 @@ func (s *UpdateService) ShuffleUpdate(profileId string, options ShuffleUpdatesOp
 		return SuccessUpdateResponse{}, err
 	}
 	var res SuccessUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) CreateUpdate(newUpdate CreateUpdateOptions) (SuccessCreateUpdateResponse, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/create.json", newUpdate)
+
+	if err != nil {
+		return SuccessCreateUpdateResponse{}, err
+	}
+	var res SuccessCreateUpdateResponse
 	_, err = s.client.do(req, &res)
 	return res, err
 }

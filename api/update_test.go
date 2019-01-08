@@ -137,3 +137,25 @@ func TestShuffleUpdates(t *testing.T) {
 	assert.Equal(t, mockResponse, res)
 	clientMock.AssertExpectations(t)
 }
+
+func TestCreateUpdates(t *testing.T) {
+	mockResponse := SuccessCreateUpdateResponse{
+		Success:     true,
+		BufferCount: 10,
+	}
+
+	newUpdate := CreateUpdateOptions{
+		ProfileIds: []string{"uudid1", "uuid2"},
+		Text:       "Hello from go-buffer",
+	}
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/create.json", newUpdate).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.CreateUpdate(newUpdate)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
