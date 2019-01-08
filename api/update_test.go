@@ -93,3 +93,47 @@ func TestGetSendUpdates(t *testing.T) {
 	assert.Equal(t, mockResponse, user)
 	clientMock.AssertExpectations(t)
 }
+
+func TestReorderUpdates(t *testing.T) {
+	mockResponse := SuccessUpdateResponse{
+		Success: true,
+	}
+
+	options := ReorderUpdatesOptions{
+		Offset: 1,
+		Order:  1,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/profiles/uuid/updates/reorder.json?offset=1&order=1&utc=false", mock.Anything).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ReorderUpdate("uuid", options)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestShuffleUpdates(t *testing.T) {
+	mockResponse := SuccessUpdateResponse{
+		Success: true,
+	}
+
+	options := ShuffleUpdatesOptions{
+		Count: 1,
+		Utc:   true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/profiles/uuid/updates/shuffle.json?count=1&utc=true", mock.Anything).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ShuffleUpdate("uuid", options)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}

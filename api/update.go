@@ -35,6 +35,22 @@ type SendUpdateOptions struct {
 	Utc    int64  `form:"utc" json:"utc"`
 	Filter string `form:"filter" json:"filter"`
 }
+
+type SuccessUpdateResponse struct {
+	Success bool     `json:"success"`
+	Updates []Update `json:"updates"`
+}
+
+type ReorderUpdatesOptions struct {
+	Order  int  `form:"order" json:"order"`
+	Offset int  `form:"offset" json:"offset"`
+	Utc    bool `form:"utc" json:"utc"`
+}
+
+type ShuffleUpdatesOptions struct {
+	Count int  `form:"count" json:"count"`
+	Utc   bool `form:"utc" json:"utc"`
+}
 type UpdateService struct {
 	client Client
 }
@@ -80,6 +96,42 @@ func (s *UpdateService) GetSendUpdates(profileId string, options SendUpdateOptio
 		return CountUpdateResponse{}, err
 	}
 	var res CountUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) ReorderUpdate(profileId string, options ReorderUpdatesOptions) (SuccessUpdateResponse, error) {
+
+	parameters, err := getValuesWithoutEmpty(options)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+
+	req, err := s.client.newRequest("POST", "/profiles/"+profileId+"/updates/reorder.json?"+parameters.Encode(), nil)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+	var res SuccessUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) ShuffleUpdate(profileId string, options ShuffleUpdatesOptions) (SuccessUpdateResponse, error) {
+
+	parameters, err := getValuesWithoutEmpty(options)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+
+	req, err := s.client.newRequest("POST", "/profiles/"+profileId+"/updates/shuffle.json?"+parameters.Encode(), nil)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+	var res SuccessUpdateResponse
 	_, err = s.client.do(req, &res)
 	return res, err
 }
