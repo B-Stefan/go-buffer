@@ -214,3 +214,20 @@ func TestDestroyUpdate(t *testing.T) {
 	assert.Equal(t, mockResponse.Success, res)
 	clientMock.AssertExpectations(t)
 }
+
+func TestMoveToTopUpdate(t *testing.T) {
+	mockResponse := Update{
+		Text: "Greetings from go-buffer",
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/move_to_top.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.MoveToTopUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}

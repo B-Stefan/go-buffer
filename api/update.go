@@ -213,3 +213,15 @@ func (s *UpdateService) DestroyUpdate(updateId string) (bool, error) {
 	_, err = s.client.do(req, &res)
 	return res.Success, err
 }
+
+func (s *UpdateService) MoveToTopUpdate(updateId string) (Update, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/move_to_top.json", nil)
+
+	if err != nil {
+		return Update{}, err
+	}
+	var res Update
+	_, err = s.client.do(req, &res)
+	return res, err
+}
