@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./api"
 	"context"
 	"flag"
 	"fmt"
+	"github.com/b-stefan/go-buffer/api"
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"github.com/skratchdot/open-golang/open"
