@@ -2,9 +2,12 @@
 [![Build Status](https://travis-ci.org/B-Stefan/go-buffer.svg?branch=master)](https://travis-ci.org/B-Stefan/go-buffer)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8391f026b21e3a252567/maintainability)](https://codeclimate.com/github/B-Stefan/go-buffer/maintainability)
 
-A simple wrapper for the [buffer rest api](https://buffer.com/developers/api)
+A simple wrapper to simplify and type the awsome [buffer rest api](https://buffer.com/developers/api)
 
-**WIP - Not production ready!**
+*You encountered a bug or want to improve this module? 
+Wow, great lets improve together! Im happy for every issue or merge request!*
+
+**Known issue with oAuth see [#4](https://github.com/B-Stefan/go-buffer/issues/4)**
 
 ## Getting started
 
@@ -39,8 +42,9 @@ func main() {
 See [example.go](./example.go)
 
 
-## Todos 
+## Todos / Learnings
 
-* [#2 Enhance parsing of options (see @Todo)](https://github.com/B-Stefan/go-buffer/issues/2)
-* [#1 - Add POST routes for updates](https://github.com/B-Stefan/go-buffer/issues/1)
-* Enhance error handling 
+* This this API with real return values. **Blocked by [#4](https://github.com/B-Stefan/go-buffer/issues/4)**
+* Enhance error handling according to docs 
+* Use composition for response / options types? (Learn how to use composition in go 😉)
+* Test more unmarshal / marshal or create a integration test with real api (favored)
