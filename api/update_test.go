@@ -180,3 +180,37 @@ func TestUpdateUpdate(t *testing.T) {
 	assert.Equal(t, mockResponse, res)
 	clientMock.AssertExpectations(t)
 }
+
+func TestShareUpdate(t *testing.T) {
+	mockResponse := SuccessResponse{
+		Success: true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/share.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ShareUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse.Success, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestDestroyUpdate(t *testing.T) {
+	mockResponse := SuccessResponse{
+		Success: true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/destroy.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.DestroyUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse.Success, res)
+	clientMock.AssertExpectations(t)
+}

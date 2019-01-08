@@ -189,3 +189,27 @@ func (s *UpdateService) UpdateUpdate(newUpdate UpdateUpdateOptions) (SuccessUpda
 	_, err = s.client.do(req, &res)
 	return res, err
 }
+
+func (s *UpdateService) ShareUpdate(updateId string) (bool, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/share.json", nil)
+
+	if err != nil {
+		return false, err
+	}
+	var res SuccessResponse
+	_, err = s.client.do(req, &res)
+	return res.Success, err
+}
+
+func (s *UpdateService) DestroyUpdate(updateId string) (bool, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/destroy.json", nil)
+
+	if err != nil {
+		return false, err
+	}
+	var res SuccessResponse
+	_, err = s.client.do(req, &res)
+	return res.Success, err
+}
