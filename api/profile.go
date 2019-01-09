@@ -3,8 +3,8 @@ package api
 import "encoding/json"
 
 type Schedule struct {
-	Days  []string `json:"days",from:"days"`
-	Times []string `json:"times",from:"times"`
+	Days  []string `json:"days" from:"days"`
+	Times []string `json:"times" from:"times"`
 }
 type Profile struct {
 	Avatar            string                      `json:"avatar,omitempty"`

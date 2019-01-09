@@ -70,8 +70,8 @@ func TestEncodeValues(t *testing.T) {
 		Name string `form:"name"`
 	}
 	body := struct {
-		Test string   `json:"test",form:"active"`
-		List []Nested `json:"test"`
+		Test string   `json:"test" form:"active"`
+		List []Nested `json:"nested"`
 	}{
 		Test: "Bob",
 		List: []Nested{{Name: "Yoda"}, {Name: "Luke"}},
