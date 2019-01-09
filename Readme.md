@@ -1,6 +1,7 @@
 # Go Buffer 
 [![Build Status](https://travis-ci.org/B-Stefan/go-buffer.svg?branch=master)](https://travis-ci.org/B-Stefan/go-buffer)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8391f026b21e3a252567/maintainability)](https://codeclimate.com/github/B-Stefan/go-buffer/maintainability)
+[![Go Report Card](https://goreportcard.com/badge/github.com/B-Stefan/go-buffer)](https://goreportcard.com/report/github.com/B-Stefan/go-buffer)
 
 A simple wrapper to simplify and type the awesome [buffer rest api](https://buffer.com/developers/api)
 
