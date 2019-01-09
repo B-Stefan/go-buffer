@@ -93,3 +93,141 @@ func TestGetSendUpdates(t *testing.T) {
 	assert.Equal(t, mockResponse, user)
 	clientMock.AssertExpectations(t)
 }
+
+func TestReorderUpdates(t *testing.T) {
+	mockResponse := SuccessUpdateResponse{
+		Success: true,
+	}
+
+	options := ReorderUpdatesOptions{
+		Offset: 1,
+		Order:  1,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/profiles/uuid/updates/reorder.json?offset=1&order=1&utc=false", mock.Anything).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ReorderUpdate("uuid", options)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestShuffleUpdates(t *testing.T) {
+	mockResponse := SuccessUpdateResponse{
+		Success: true,
+	}
+
+	options := ShuffleUpdatesOptions{
+		Count: 1,
+		Utc:   true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/profiles/uuid/updates/shuffle.json?count=1&utc=true", mock.Anything).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ShuffleUpdate("uuid", options)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestCreateUpdate(t *testing.T) {
+	mockResponse := SuccessUpdateResponseWithCount{
+		Success:     true,
+		BufferCount: 10,
+	}
+
+	newUpdate := CreateUpdateOptions{
+		ProfileIds: []string{"uudid1", "uuid2"},
+		Text:       "Hello from go-buffer",
+	}
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/create.json", newUpdate).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.CreateUpdate(newUpdate)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestUpdateUpdate(t *testing.T) {
+	mockResponse := SuccessUpdateResponseWithCount{
+		Success:     true,
+		BufferCount: 10,
+	}
+
+	newUpdate := UpdateUpdateOptions{
+		Text: "Hello from go-buffer",
+	}
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/update.json", newUpdate).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.UpdateUpdate(newUpdate)
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestShareUpdate(t *testing.T) {
+	mockResponse := SuccessResponse{
+		Success: true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/share.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.ShareUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse.Success, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestDestroyUpdate(t *testing.T) {
+	mockResponse := SuccessResponse{
+		Success: true,
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/destroy.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.DestroyUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse.Success, res)
+	clientMock.AssertExpectations(t)
+}
+
+func TestMoveToTopUpdate(t *testing.T) {
+	mockResponse := Update{
+		Text: "Greetings from go-buffer",
+	}
+
+	clientMock := ClientMock{}
+	clientMock.On("do", mock.Anything).Return(mockResponse)
+	clientMock.On("newRequest", "POST", "/updates/uuid/move_to_top.json", nil).Return()
+
+	service := UpdateService{&clientMock}
+	res, err := service.MoveToTopUpdate("uuid")
+
+	assert.NoErrorf(t, err, "Should not throw error")
+	assert.Equal(t, mockResponse, res)
+	clientMock.AssertExpectations(t)
+}

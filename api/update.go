@@ -35,6 +35,52 @@ type SendUpdateOptions struct {
 	Utc    int64  `form:"utc" json:"utc"`
 	Filter string `form:"filter" json:"filter"`
 }
+
+type SuccessUpdateResponse struct {
+	Success bool     `json:"success"`
+	Updates []Update `json:"updates"`
+}
+type SuccessUpdateResponseWithCount struct {
+	Success          bool     `json:"success"`
+	BufferCount      int      `json:"buffer_count"`
+	BufferPercentage float32  `json:"buffer_percentage"`
+	Updates          []Update `json:"updates"`
+}
+
+type ReorderUpdatesOptions struct {
+	Order  int  `form:"order" json:"order"`
+	Offset int  `form:"offset" json:"offset"`
+	Utc    bool `form:"utc" json:"utc"`
+}
+
+type ShuffleUpdatesOptions struct {
+	Count int  `form:"count" json:"count"`
+	Utc   bool `form:"utc" json:"utc"`
+}
+
+type CreateUpdateOptions struct {
+	ProfileIds  []string      `form:"profile_ids" json:"profile_ids"`
+	Text        string        `form:"text,omitempty" json:"text,omitempty"`
+	Shorten     bool          `form:"shorten,omitempty" json:"shorten,omitempty"`
+	Now         bool          `form:"now,omitempty" json:"now,omitempty"`
+	Top         bool          `form:"top,omitempty" json:"top,omitempty"`
+	Media       []interface{} `form:"media,omitempty" json:"media,omitempty"`
+	Attachment  bool          `form:"attachment,omitempty" json:"attachment,omitempty"`
+	ScheduledAt bool          `form:"scheduled_at,omitempty" json:"scheduled_at,omitempty"`
+	Retweet     struct {
+		TweetId string `form:"tweet_id" json:"tweet_id"`
+		Comment string `form:"comment,omitempty" json:"comment,omitempty"`
+	} `form:"retweet,omitempty" json:"retweet,omitempty"`
+}
+
+type UpdateUpdateOptions struct {
+	Text        string        `form:"text" json:"text"`
+	Media       []interface{} `form:"media" json:"media"`
+	Now         bool          `form:"now" json:"now"`
+	Utc         bool          `form:"utc" json:"utc"`
+	ScheduledAt bool          `form:"scheduled_at" json:"scheduled_at"`
+}
+
 type UpdateService struct {
 	client Client
 }
@@ -80,6 +126,102 @@ func (s *UpdateService) GetSendUpdates(profileId string, options SendUpdateOptio
 		return CountUpdateResponse{}, err
 	}
 	var res CountUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) ReorderUpdate(profileId string, options ReorderUpdatesOptions) (SuccessUpdateResponse, error) {
+
+	parameters, err := getValuesWithoutEmpty(options)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+
+	req, err := s.client.newRequest("POST", "/profiles/"+profileId+"/updates/reorder.json?"+parameters.Encode(), nil)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+	var res SuccessUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) ShuffleUpdate(profileId string, options ShuffleUpdatesOptions) (SuccessUpdateResponse, error) {
+
+	parameters, err := getValuesWithoutEmpty(options)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+
+	req, err := s.client.newRequest("POST", "/profiles/"+profileId+"/updates/shuffle.json?"+parameters.Encode(), nil)
+
+	if err != nil {
+		return SuccessUpdateResponse{}, err
+	}
+	var res SuccessUpdateResponse
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) CreateUpdate(newUpdate CreateUpdateOptions) (SuccessUpdateResponseWithCount, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/create.json", newUpdate)
+
+	if err != nil {
+		return SuccessUpdateResponseWithCount{}, err
+	}
+	var res SuccessUpdateResponseWithCount
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) UpdateUpdate(newUpdate UpdateUpdateOptions) (SuccessUpdateResponseWithCount, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/update.json", newUpdate)
+
+	if err != nil {
+		return SuccessUpdateResponseWithCount{}, err
+	}
+	var res SuccessUpdateResponseWithCount
+	_, err = s.client.do(req, &res)
+	return res, err
+}
+
+func (s *UpdateService) ShareUpdate(updateId string) (bool, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/share.json", nil)
+
+	if err != nil {
+		return false, err
+	}
+	var res SuccessResponse
+	_, err = s.client.do(req, &res)
+	return res.Success, err
+}
+
+func (s *UpdateService) DestroyUpdate(updateId string) (bool, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/destroy.json", nil)
+
+	if err != nil {
+		return false, err
+	}
+	var res SuccessResponse
+	_, err = s.client.do(req, &res)
+	return res.Success, err
+}
+
+func (s *UpdateService) MoveToTopUpdate(updateId string) (Update, error) {
+
+	req, err := s.client.newRequest("POST", "/updates/"+updateId+"/move_to_top.json", nil)
+
+	if err != nil {
+		return Update{}, err
+	}
+	var res Update
 	_, err = s.client.do(req, &res)
 	return res, err
 }
